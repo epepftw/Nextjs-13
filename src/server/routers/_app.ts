@@ -2,28 +2,15 @@ import { z } from "zod";
 import { procedure, router } from "../trpc";
 
 export const appRouter = router({
-  hello: procedure
+  poke_id: procedure
     .input(
       z.object({
-        text: z.string(),
+        id: z.number(),
       })
     )
     .query(({ input }) => {
       return {
-        greeting: `hello ${input.text}`,
-      };
-    }),
-
-  deenice: procedure
-    .input(
-      z.object({
-        owner: z.string(),
-        age: z.number(),
-      })
-    )
-    .query(({ input }) => {
-      return {
-        name: `I am ${input.owner} and i'm ${input.age} years old`,
+        id: `what but how?${input.id}`,
       };
     }),
 });

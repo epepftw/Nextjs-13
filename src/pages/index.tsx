@@ -1,15 +1,22 @@
 import { getOptionsForVote } from "@/utils/getRandomPokemon";
-// import { trpc } from "@/utils/trpc";
+import { useState } from "react";
+import { trpc } from "@/utils/trpc";
 
 export default function Home() {
-  // const hello = trpc.hello.useQuery({ text: "bro" });
-  // const name = trpc.deenice.useQuery({ owner: "Balakahye", age: 25 });
+  const [ids, updateIds] = useState(getOptionsForVote);
+  const [first, second] = ids;
 
-  // if (!hello.data || !name.data) {
-  //   return <div>Loading...</div>;
-  // }
+  const firstPokemon = trpc.poke_id.useQuery({ id: first });
+  const secondPokemon = trpc.poke_id.useQuery({ id: second });
 
-  const [first, second] = getOptionsForVote();
+  console.log(firstPokemon.data, first);
+  console.log(secondPokemon.data, second);
+
+  if (firstPokemon.isLoading || secondPokemon.isLoading) return null;
+
+  // const voteForRoundest = (selected: number) => {
+  //   updateIds(getOptionsForVote());
+  // };
 
   return (
     <div className="h-screen w-screen flex flex-col justify-center items-center">
