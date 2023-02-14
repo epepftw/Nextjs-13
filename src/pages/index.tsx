@@ -9,46 +9,41 @@ export default function Home() {
   const firstPokemon = trpc.poke_id.useQuery({ id: first });
   const secondPokemon = trpc.poke_id.useQuery({ id: second });
 
+  const btn =
+    "bg-blue-500 hover:bg-blue-700 text-white m-auto py-2 w-3/5 rounded-full text-xl capitalize  text-center mt-5";
+
   console.log(firstPokemon.data);
   console.log(secondPokemon.data);
 
   if (firstPokemon.isLoading || secondPokemon.isLoading) return null;
 
-  // const voteForRoundest = (selected: number) => {
-  //   updateIds(getOptionsForVote());
-  // };
+  const voteForStrongest = (selected: number) => {
+    updateIds(getOptionsForVote());
+  };
 
   return (
     <div className="h-screen w-screen flex flex-col justify-center items-center">
-      <div className="text-2xl text-center">Who is more cute?</div>
+      <div className="text-2xl text-center">🙀Which Pokemon is Heavier?🏋️‍♂️</div>
       <div className="p-2"></div>
       <div className="border rounded p-8 flex justify-between items-center max-w-2xl">
-        <div className="w-36 h-36 flex flex-col">
+        <div className="w-56 h-100 flex flex-col">
           <img
             className="w-full"
-            src={
-              firstPokemon.data?.sprites.front_default
-                ? firstPokemon.data.sprites.front_default
-                : ""
-            }
+            src={firstPokemon.data?.sprites ? firstPokemon.data.sprites : ""}
           />
-          <p className="text-xl capitalize text-center -mt-5">
+          <button onClick={() => voteForStrongest(first)} className={btn}>
             {firstPokemon.data?.name ? firstPokemon.data.name : ""}
-          </p>
+          </button>
         </div>
         <div className="p-8">VS</div>
-        <div className="w-36 h-36 flex flex-col">
+        <div className="w-56 h-100 flex flex-col">
           <img
             className="w-full"
-            src={
-              secondPokemon.data?.sprites.front_default
-                ? secondPokemon.data.sprites.front_default
-                : ""
-            }
+            src={secondPokemon.data?.sprites ? secondPokemon.data.sprites : ""}
           />
-          <p className="text-xl capitalize  text-center -mt-5">
+          <button onClick={() => voteForStrongest(second)} className={btn}>
             {secondPokemon.data?.name ? secondPokemon.data.name : ""}
-          </p>
+          </button>
         </div>
       </div>
     </div>
