@@ -13,9 +13,6 @@ export default function Home() {
   const btn =
     "bg-blue-500 hover:bg-blue-700 text-white m-auto py-2 w-3/5 rounded-full text-xl capitalize  text-center mt-5";
 
-  console.log(firstPokemon.data);
-  console.log(secondPokemon.data);
-
   if (firstPokemon.isLoading || secondPokemon.isLoading) return null;
 
   const voteForStrongest = (selected: number) => {
