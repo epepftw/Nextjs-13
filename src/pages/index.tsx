@@ -1,6 +1,7 @@
 import { getOptionsForVote } from "@/utils/getRandomPokemon";
 import { useState } from "react";
 import { trpc } from "@/utils/trpc";
+import Head from "next/head";
 
 export default function Home() {
   const [ids, updateIds] = useState(() => getOptionsForVote());
@@ -22,30 +23,39 @@ export default function Home() {
   };
 
   return (
-    <div className="h-screen w-screen flex flex-col justify-center items-center">
-      <div className="text-2xl text-center">🙀Which Pokemon is Heavier?🏋️‍♂️</div>
-      <div className="p-2"></div>
-      <div className="border rounded p-8 flex justify-between items-center max-w-2xl">
-        <div className="w-56 h-100 flex flex-col">
-          <img
-            className="w-full"
-            src={firstPokemon.data?.sprites ? firstPokemon.data.sprites : ""}
-          />
-          <button onClick={() => voteForStrongest(first)} className={btn}>
-            {firstPokemon.data?.name ? firstPokemon.data.name : ""}
-          </button>
+    <>
+      <Head>
+        <title>Pokemon?</title>
+      </Head>
+      <div className="h-screen w-screen flex flex-col justify-center items-center">
+        <div className="text-2xl text-center">
+          🙀Which Pokemon is Heavier?🏋️‍♂️
         </div>
-        <div className="p-8">VS</div>
-        <div className="w-56 h-100 flex flex-col">
-          <img
-            className="w-full"
-            src={secondPokemon.data?.sprites ? secondPokemon.data.sprites : ""}
-          />
-          <button onClick={() => voteForStrongest(second)} className={btn}>
-            {secondPokemon.data?.name ? secondPokemon.data.name : ""}
-          </button>
+        <div className="p-2"></div>
+        <div className=" rounded p-8 flex justify-between items-center max-w-2xl">
+          <div className="w-56 h-100 flex flex-col">
+            <img
+              className="w-full"
+              src={firstPokemon.data?.sprites ? firstPokemon.data.sprites : ""}
+            />
+            <button onClick={() => voteForStrongest(first)} className={btn}>
+              {firstPokemon.data?.name ? firstPokemon.data.name : ""}
+            </button>
+          </div>
+          <div className="p-8">VS</div>
+          <div className="w-56 h-100 flex flex-col">
+            <img
+              className="w-full"
+              src={
+                secondPokemon.data?.sprites ? secondPokemon.data.sprites : ""
+              }
+            />
+            <button onClick={() => voteForStrongest(second)} className={btn}>
+              {secondPokemon.data?.name ? secondPokemon.data.name : ""}
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
