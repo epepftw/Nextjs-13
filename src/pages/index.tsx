@@ -6,6 +6,7 @@ import Head from "next/head";
 export default function Home() {
   const [ids, updateIds] = useState(() => getOptionsForVote());
   const [first, second] = ids;
+  const [points, setPoints] = useState(0);
 
   const firstPokemon = trpc.poke_id.useQuery({ id: first });
   const secondPokemon = trpc.poke_id.useQuery({ id: second });
@@ -15,8 +16,26 @@ export default function Home() {
 
   if (firstPokemon.isLoading || secondPokemon.isLoading) return null;
 
-  const voteForStrongest = (selected: number) => {
-    updateIds(getOptionsForVote());
+  const firstChoice = () => {
+    if (firstPokemon.data?.weight && secondPokemon.data?.weight) {
+      if (firstPokemon.data?.weight > secondPokemon.data?.weight) {
+        console.log("correct");
+        setPoints(points + 1);
+      } else {
+        console.log("wrong");
+      }
+    }
+  };
+
+  const secondChoice = () => {
+    if (firstPokemon.data?.weight && secondPokemon.data?.weight) {
+      if (firstPokemon.data?.weight < secondPokemon.data?.weight) {
+        console.log("correct");
+        setPoints(points + 1);
+      } else {
+        console.log("wrong");
+      }
+    }
   };
 
   return (
@@ -35,7 +54,7 @@ export default function Home() {
               className="w-full"
               src={firstPokemon.data?.sprites ? firstPokemon.data.sprites : ""}
             />
-            <button onClick={() => voteForStrongest(first)} className={btn}>
+            <button onClick={firstChoice} className={btn}>
               {firstPokemon.data?.name ? firstPokemon.data.name : ""}
             </button>
           </div>
@@ -47,11 +66,13 @@ export default function Home() {
                 secondPokemon.data?.sprites ? secondPokemon.data.sprites : ""
               }
             />
-            <button onClick={() => voteForStrongest(second)} className={btn}>
+            <button onClick={secondChoice} className={btn}>
               {secondPokemon.data?.name ? secondPokemon.data.name : ""}
             </button>
           </div>
         </div>
+
+        <div className="points">Your Points : {points}</div>
       </div>
     </>
   );
