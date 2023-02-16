@@ -1,12 +1,19 @@
 import { getOptionsForVote } from "@/utils/getRandomPokemon";
 import { useState } from "react";
 import { trpc } from "@/utils/trpc";
+import swal from "sweetalert";
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 export default function Home() {
   const [ids, updateIds] = useState(() => getOptionsForVote());
   const [first, second] = ids;
   const [points, setPoints] = useState(0);
+
+  const router = useRouter();
+  const reload = () => {
+    router.reload();
+  };
 
   const firstPokemon = trpc.poke_id.useQuery({ id: first });
   const secondPokemon = trpc.poke_id.useQuery({ id: second });
@@ -19,10 +26,39 @@ export default function Home() {
   const firstChoice = () => {
     if (firstPokemon.data?.weight && secondPokemon.data?.weight) {
       if (firstPokemon.data?.weight > secondPokemon.data?.weight) {
-        console.log("correct");
         setPoints(points + 1);
+        swal({
+          title: "Correct!!",
+          text: `${firstPokemon.data?.name.replace(/^\w/, (c) =>
+            c.toUpperCase()
+          )} is heavier!😲😲🤯`,
+          icon: "success",
+          buttons: {
+            confirm: {
+              text: "Aww yeeaa!!",
+              value: true,
+            },
+          },
+        }).then(() => {
+          updateIds(getOptionsForVote());
+        });
       } else {
-        console.log("wrong");
+        swal({
+          title: "Wrong!!",
+          text: `${firstPokemon.data?.name.replace(/^\w/, (c) =>
+            c.toUpperCase()
+          )} is too smol!🤏🤪`,
+          icon: "error",
+          dangerMode: true,
+          buttons: {
+            confirm: {
+              text: "Aww pooo!!",
+              value: true,
+            },
+          },
+        }).then(() => {
+          updateIds(getOptionsForVote());
+        });
       }
     }
   };
@@ -30,10 +66,39 @@ export default function Home() {
   const secondChoice = () => {
     if (firstPokemon.data?.weight && secondPokemon.data?.weight) {
       if (firstPokemon.data?.weight < secondPokemon.data?.weight) {
-        console.log("correct");
         setPoints(points + 1);
+        swal({
+          title: "Correct!!",
+          text: `${secondPokemon.data?.name.replace(/^\w/, (c) =>
+            c.toUpperCase()
+          )} is heavier!😲😲🤯`,
+          icon: "success",
+          buttons: {
+            confirm: {
+              text: "Aww yeeaa!!",
+              value: true,
+            },
+          },
+        }).then(() => {
+          updateIds(getOptionsForVote());
+        });
       } else {
-        console.log("wrong");
+        swal({
+          title: "Wrong!!",
+          text: `${secondPokemon.data?.name.replace(/^\w/, (c) =>
+            c.toUpperCase()
+          )} is too smol!🤏🤪`,
+          icon: "error",
+          dangerMode: true,
+          buttons: {
+            confirm: {
+              text: "Aww pooo!!",
+              value: true,
+            },
+          },
+        }).then(() => {
+          updateIds(getOptionsForVote());
+        });
       }
     }
   };
@@ -44,11 +109,11 @@ export default function Home() {
         <title>Pokemon?</title>
       </Head>
       <div className="h-screen w-screen flex flex-col justify-center items-center">
-        <div className="text-2xl text-center">
+        <div className="text-8xl text-center pokefont">
           🙀Which Pokemon is Heavier?🏋️‍♂️
         </div>
         <div className="p-2"></div>
-        <div className=" rounded p-8 flex justify-between items-center max-w-2xl">
+        <div className="flex justify-between items-center max-w-2xl">
           <div className="w-56 h-100 flex flex-col">
             <img
               className="w-full"
@@ -58,7 +123,7 @@ export default function Home() {
               {firstPokemon.data?.name ? firstPokemon.data.name : ""}
             </button>
           </div>
-          <div className="p-8">VS</div>
+          <div className="p-2 pokefont text-5xl">VS</div>
           <div className="w-56 h-100 flex flex-col">
             <img
               className="w-full"
@@ -72,7 +137,20 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="points">Your Points : {points}</div>
+        <div className="pt-16 text-center">
+          <div className="points text-6xl pokefont">Your Points : {points}</div>
+          <div className="flex my-5 text-center justify-center text-2xl pokefont items-center">
+            <p className="">
+              Refresh the page to reset game or click&nbsp;&nbsp;
+            </p>
+            <button
+              className="text-5xl text-green-500 underline"
+              onClick={reload}
+            >
+              here.
+            </button>
+          </div>
+        </div>
       </div>
     </>
   );

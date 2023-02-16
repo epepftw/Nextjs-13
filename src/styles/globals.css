@@ -2,6 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
-body{
-    @apply text-white bg-gray-800;
-}
+@font-face {
+    font-family: 'Pocketmon';
+    src: url('/fonts/PocketMonk.ttf') format('truetype');
+  }
+
+  body{
+    color: #fff;
+    background-color: #1a202c;
+  }
+  
+  .pokefont {
+    font-family: 'Pocketmon', sans-serif;
+    color: #FFDE00;
+    -webkit-text-stroke: .5px #CC0000;
+    letter-spacing: 2px;
+  }
+
