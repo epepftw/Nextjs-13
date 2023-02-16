@@ -10,7 +10,7 @@ export default function Home() {
   const [first, second] = ids;
   const [points, setPoints] = useState(0);
   const [life, setLife] = useState(5);
-  const hearts = ["💙", "❤️", "💜", "🧡", "💛", "💚", "🤎", "🖤", "🤍"];
+  const hearts = ["💙", "❤️", "💜", "🧡", "💚"];
 
   const router = useRouter();
   const reload = () => {
